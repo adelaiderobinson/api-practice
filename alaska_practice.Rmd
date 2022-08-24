@@ -1,0 +1,32 @@
+---
+title: "alaska"
+output: html_document
+date: "2022-08-24"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(metajam)
+library(here)
+library(tidyverse)
+
+data_obj <- "https://knb.ecoinformatics.org/knb/d1/mn/v2/object/urn%3Auuid%3A7fc6f6db-c5ea-426a-a743-1f2edafb43b8"
+path <- here()
+download_d1_data(data_obj, path)
+my_data <- read_d1_files(here("household_language_csv"))
+
+```
+Write a piece of code that will compute the percentage of Alaskan household speaking only English for the year 2009 to 2015
+```{r}
+data_frame <- my_data$data
+
+summary <- data_frame %>% 
+  filter(Year >= 2009 & Year <= 2015) %>% 
+  summarize(total = sum(total), percent_english = sum(speak_only_english)/sum(total))
+```
+
+
